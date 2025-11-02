@@ -18,24 +18,33 @@
 
     <script>
         const calcularTroco = (precoDoProduto, valorPago, estoqueCedulas) => {
-            const troco = [];
             let valorRestante = valorPago - precoDoProduto;
-            for (const cedula in estoqueCedulas) {
-                const cedulaNum = Number(cedula);
-                while (valorRestante >= cedulaNum) {
-                    if (estoqueCedulas[cedulaNum] > 0) {
-                        valorRestante -= cedulaNum;
-                        troco.push(cedulaNum);
-                        estoqueCedulas[cedulaNum]--;
-                    } else break;
+            const troco = [];
+
+            // Pega apenas as cédulas disponíveis, do maior para o menor
+            const cedulasDisponiveis = Object.entries(estoqueCedulas)
+                .filter(([_, quantidade]) => quantidade > 0)
+                .map(([cedula]) => Number(cedula))
+                .sort((a, b) => b - a);
+
+            for (const cedula of cedulasDisponiveis) {
+                let quantidadeDisponivel = estoqueCedulas[cedula];
+                while (valorRestante >= cedula && quantidadeDisponivel > 0) {
+                    valorRestante -= cedula;
+                    troco.push(cedula);
+                    quantidadeDisponivel--;
                 }
+                estoqueCedulas[cedula] = quantidadeDisponivel; // Atualiza estoque
             }
+
             if (valorRestante > 0) {
                 throw new Error("Não há cédulas suficientes para fornecer o troco.");
             }
+
             return troco;
-        }
+        };
     </script>
+
 
     <script>
         const estoqueCedulasTest1 = {
@@ -68,8 +77,8 @@
             return amostras.reduce((acumulador, valorAtual) => acumulador + valorAtual, 0);
         }
         test('calcularTroco(120, 200) deve retornar 80, se possuir as cedulas necessarias', (assert) => {
-            const resultado = calcularTroco(120, 200, {... estoqueCedulasTest1});
-            assert.ok(resultado.every(cedula => checkEstoque({...estoqueCedulasTest1}, cedula)));
+            const resultado = calcularTroco(120, 200, { ...estoqueCedulasTest1 });
+            assert.ok(resultado.every(cedula => checkEstoque({ ...estoqueCedulasTest1 }, cedula)));
             const trocoResultado = sum(resultado);
             const trocoEsperado = 80;
             assert.equal(trocoResultado, trocoEsperado);
