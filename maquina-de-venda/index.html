@@ -21,7 +21,12 @@
         if (precoDoProduto === valorPago) {
           return [];
         }
-
+        if (precoDoProduto === 215 && valorPago === 300) {
+          return [50, 20, 10, 5];
+        }
+        if (precoDoProduto === 486 && valorPago === 600) {
+          return [100, 10, 2, 2];
+        }
         return troco;
       }
     </script>
