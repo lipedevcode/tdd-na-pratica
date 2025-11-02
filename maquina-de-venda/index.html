@@ -1,37 +1,43 @@
 <html>
-  <head>
+
+<head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Aprendendo TDD na prática</title>
     <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-1.18.0.css">
     <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
-  </head>
-  <body>
+</head>
+
+<body>
     <div id='main' style='padding: 2em;'>
-      <h1>Calculadora de troco de uma máquina de venda</h1>
-      <h2>Calcule o troco de acordo com o preço do produto e dinheiro recebido</h2>
+        <h1>Calculadora de troco de uma máquina de venda</h1>
+        <h2>Calcule o troco de acordo com o preço do produto e dinheiro recebido</h2>
     </div>
     <div id="qunit"></div>
     <div id="qunit-fixture"></div>
     <script src="https://code.jquery.com/qunit/qunit-1.18.0.js"></script>
 
     <script>
-      const calcularTroco = (precoDoProduto, valorPago) => {
-        if (precoDoProduto === valorPago) {
-          return [];
-        }
-        const cedulasDisponiveis = [100, 50, 20, 10, 5, 2, 1];
-        let troco = [];
-        let diff = valorPago - precoDoProduto;
-        for (i = 0; i<cedulasDisponiveis.length;){
-            if (cedulasDisponiveis[i] <= diff){
-                troco.push(cedulasDisponiveis[i])
-                diff = diff - cedulasDisponiveis[i];
+        const calcularTroco = (precoDoProduto, valorPago) => {
+            if (valorPago < precoDoProduto) {
+                throw new Error("Valor pago insuficiente");
             }
-            else i++;
-            //
+            const cedulasDisponiveis = [100, 50, 20, 10, 5, 2, 1];
+            const troco = [];
+
+            let valorRestante = valorPago - precoDoProduto;
+
+            if (valorRestante == 0) {
+                return [];
+            }
+
+            for (const cedula of cedulasDisponiveis) {
+                while (valorRestante >= cedula) {
+                    troco.push(cedula);
+                    valorRestante -= cedula;
+                }
+            }
+            return troco;
         }
-        return troco;
-      }
     </script>
 
     <script>
@@ -56,5 +62,6 @@
         })
     </script>
 
-  </body>
+</body>
+
 </html>
