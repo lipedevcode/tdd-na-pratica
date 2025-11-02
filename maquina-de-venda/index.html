@@ -16,16 +16,18 @@
 
     <script>
       const calcularTroco = (precoDoProduto, valorPago) => {
-        let troco = [];
-
         if (precoDoProduto === valorPago) {
           return [];
         }
-        if (precoDoProduto === 215 && valorPago === 300) {
-          return [50, 20, 10, 5];
-        }
-        if (precoDoProduto === 486 && valorPago === 600) {
-          return [100, 10, 2, 2];
+        const cedulasDisponiveis = [100, 50, 20, 10, 5, 2, 1];
+        let troco = [];
+        let diff = valorPago - precoDoProduto;
+        for (i = 0; i<cedulasDisponiveis.length;){
+            if (cedulasDisponiveis[i] <= diff){
+                troco.push(cedulasDisponiveis[i])
+                diff = diff - cedulasDisponiveis[i];
+            }
+            else i++;
         }
         return troco;
       }
