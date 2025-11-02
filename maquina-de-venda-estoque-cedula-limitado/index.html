@@ -17,28 +17,34 @@
     <script src="https://code.jquery.com/qunit/qunit-1.18.0.js"></script>
 
     <script>
-        const cedulasDisponiveis = {
-            100: 1, 
-            50: 0, 
-            20: 5, 
-            10: 10 
+        const estoqueCedulas = {
+            100: 1,
+            50: 0,
+            20: 5,
+            10: 10,
+            5: 0,
+            2: 0,
+            1: 0
         };
         const calcularTroco = (precoDoProduto, valorPago) => {
-            const troco = []
+            const troco = [10, 10, 10, 10, 10, 10, 10, 10];
             return troco;
         }
     </script>
-        
+
     <script>
-        const cedulasDisponiveisTest1 = {
-            100: 1, 
-            50: 0, 
-            20: 5, 
-            10: 10 
+        const estoqueCedulasTest1 = {
+            100: 1,
+            50: 0,
+            20: 5,
+            10: 10,
+            5: 0,
+            2: 0,
+            1: 0
         };
         const checkEstoque = (cedulasDisponiveis, cedula) => {
             // checa se a cedula é valida, se está no dentro estoque disponivel
-            if (cedulasDisponiveis[cedula] && cedulasDisponiveis[cedula] > 0){
+            if (cedulasDisponiveis[cedula] && cedulasDisponiveis[cedula] > 0) {
                 cedulasDisponiveis[cedula]--;
                 return true;
             }
@@ -47,9 +53,9 @@
         const sum = (amostras) => {
             return amostras.reduce((acumulador, valorAtual) => acumulador + valorAtual, 0);
         }
-        test('calcularTroco(120, 200) deve retornar 80, se possuir as cedulas necessarias', (assert)=>{
+        test('calcularTroco(120, 200) deve retornar 80, se possuir as cedulas necessarias', (assert) => {
             const resultado = calcularTroco(120, 200);
-            assert.ok(resultado.every(cedula => checkEstoque(cedulasDisponiveis, cedula))); 
+            assert.ok(resultado.every(cedula => checkEstoque(estoqueCedulasTest1, cedula)));
             const trocoResultado = sum(resultado);
             const trocoEsperado = 80;
             assert.equal(trocoResultado, trocoEsperado);
