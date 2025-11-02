@@ -16,7 +16,7 @@
 
     <script>
       const calcularTroco = (precoDoProduto, valorPago) => {
-        let troco = [50, 20, 10, 5];
+        let troco = [];
 
         if (precoDoProduto === valorPago) {
           return [];
@@ -36,7 +36,11 @@
             const trocoEsperado = [50, 20, 10, 5];
             assert.deepEqual(resultado, trocoEsperado);
         });
-        
+        test('calcularTroco(486, 600) deve retornar [100, 10, 2, 2]', (assert) => {
+            const resultado = calcularTroco(486, 600);
+            const trocoEsperado = [100, 10, 2, 2];
+            assert.deepEqual(resultado, trocoEsperado);
+        });
     </script>
 
   </body>
