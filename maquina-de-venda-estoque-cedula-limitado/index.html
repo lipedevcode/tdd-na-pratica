@@ -1,0 +1,61 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Aprendendo TDD na prática</title>
+    <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-1.18.0.css">
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
+</head>
+
+<body>
+    <div id='main' style='padding: 2em;'>
+        <h1>Calculadora de troco de uma máquina de venda com estoque de cedula limitado</h1>
+        <h2>Calcule o troco de acordo com o preço do produto e dinheiro recebido</h2>
+    </div>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+    <script src="https://code.jquery.com/qunit/qunit-1.18.0.js"></script>
+
+    <script>
+        const cedulasDisponiveis = {
+            100: 1, 
+            50: 0, 
+            20: 5, 
+            10: 10 
+        };
+        const calcularTroco = (precoDoProduto, valorPago) => {
+            const troco = []
+            return troco;
+        }
+    </script>
+        
+    <script>
+        const cedulasDisponiveisTest1 = {
+            100: 1, 
+            50: 0, 
+            20: 5, 
+            10: 10 
+        };
+        const checkEstoque = (cedulasDisponiveis, cedula) => {
+            // checa se a cedula é valida, se está no dentro estoque disponivel
+            if (cedulasDisponiveis[cedula] && cedulasDisponiveis[cedula] > 0){
+                cedulasDisponiveis[cedula]--;
+                return true;
+            }
+            return false;
+        }
+        const sum = (amostras) => {
+            return amostras.reduce((acumulador, valorAtual) => acumulador + valorAtual, 0);
+        }
+        test('calcularTroco(120, 200) deve retornar 80, se possuir as cedulas necessarias', (assert)=>{
+            const resultado = calcularTroco(120, 200);
+            assert.ok(resultado.every(cedula => checkEstoque(cedulasDisponiveis, cedula))); 
+            const trocoResultado = sum(resultado);
+            const trocoEsperado = 80;
+            assert.equal(trocoResultado, trocoEsperado);
+        });
+    </script>
+
+</body>
+
+</html>
