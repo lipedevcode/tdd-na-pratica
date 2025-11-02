@@ -27,7 +27,19 @@
             1: 0
         };
         const calcularTroco = (precoDoProduto, valorPago) => {
-            const troco = [20, 20, 20, 20];
+            const troco = [];
+            let valorRestante = valorPago - precoDoProduto;
+            for (const cedula in estoqueCedulas){
+                const cedulaNum = Number(cedula);   
+                while (valorRestante >= cedulaNum){
+                    if (estoqueCedulas[cedulaNum] > 0) {
+                        valorRestante -= cedulaNum;
+                        troco.push(cedulaNum);
+                        estoqueCedulas[cedulaNum] --;
+                    } else break;
+                }
+            }
+            console.log(troco)
             return troco;
         }
     </script>
