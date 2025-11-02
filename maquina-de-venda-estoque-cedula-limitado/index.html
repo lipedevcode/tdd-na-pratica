@@ -17,29 +17,22 @@
     <script src="https://code.jquery.com/qunit/qunit-1.18.0.js"></script>
 
     <script>
-        const estoqueCedulas = {
-            100: 1,
-            50: 0,
-            20: 5,
-            10: 10,
-            5: 0,
-            2: 0,
-            1: 0
-        };
-        const calcularTroco = (precoDoProduto, valorPago) => {
+        const calcularTroco = (precoDoProduto, valorPago, estoqueCedulas) => {
             const troco = [];
             let valorRestante = valorPago - precoDoProduto;
-            for (const cedula in estoqueCedulas){
-                const cedulaNum = Number(cedula);   
-                while (valorRestante >= cedulaNum){
+            for (const cedula in estoqueCedulas) {
+                const cedulaNum = Number(cedula);
+                while (valorRestante >= cedulaNum) {
                     if (estoqueCedulas[cedulaNum] > 0) {
                         valorRestante -= cedulaNum;
                         troco.push(cedulaNum);
-                        estoqueCedulas[cedulaNum] --;
+                        estoqueCedulas[cedulaNum]--;
                     } else break;
                 }
             }
-            console.log(troco)
+            if (valorRestante > 0) {
+                throw new Error("Não há cédulas suficientes para fornecer o troco.");
+            }
             return troco;
         }
     </script>
@@ -50,6 +43,15 @@
             50: 0,
             20: 5,
             10: 10,
+            5: 0,
+            2: 0,
+            1: 0
+        };
+        const estoqueVazio = {
+            100: 0,
+            50: 0,
+            20: 0,
+            10: 0,
             5: 0,
             2: 0,
             1: 0
@@ -66,11 +68,18 @@
             return amostras.reduce((acumulador, valorAtual) => acumulador + valorAtual, 0);
         }
         test('calcularTroco(120, 200) deve retornar 80, se possuir as cedulas necessarias', (assert) => {
-            const resultado = calcularTroco(120, 200);
-            assert.ok(resultado.every(cedula => checkEstoque(estoqueCedulasTest1, cedula)));
+            const resultado = calcularTroco(120, 200, {... estoqueCedulasTest1});
+            assert.ok(resultado.every(cedula => checkEstoque({...estoqueCedulasTest1}, cedula)));
             const trocoResultado = sum(resultado);
             const trocoEsperado = 80;
             assert.equal(trocoResultado, trocoEsperado);
+        });
+        test('calcularTroco(5, 10) deve retornar 5, se possuir as cedulas necessarias', (assert) => {
+            assert.throws(
+                () => calcularTroco(5, 10, estoqueVazio),
+                /Não há cédulas suficientes/,
+                "A função deve lançar um erro quando não há cédulas suficientes para o troco"
+            );
         });
     </script>
 
