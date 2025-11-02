@@ -18,6 +18,10 @@
       const calcularTroco = (precoDoProduto, valorPago) => {
         let troco = [50, 20, 10, 5];
 
+        if (precoDoProduto === valorPago) {
+          return [];
+        }
+
         return troco;
       }
     </script>
